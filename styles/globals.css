@@ -1,0 +1,22 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+  }
+  
+  button {
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    outline: none;
+    border-radius: 4px;
+  }
+  
+  input, textarea {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+  }
+  
+  h1, h2, h3, p {
+    margin: 0 0 10px 0;
+  }
