@@ -1,9 +1,8 @@
-// frontend/components/Header.js
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FaSignOutAlt } from 'react-icons/fa';
 
-const Header = ({ isLoggedIn, handleLogout, showLogin, setShowLogin }) => {
+const Header = ({ isLoggedIn, handleLogout, setShowLogin }) => {
   return (
     <motion.div
       initial={{ y: -50, opacity: 0 }}
@@ -13,13 +12,13 @@ const Header = ({ isLoggedIn, handleLogout, showLogin, setShowLogin }) => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: '#ffffffcc', // Semi-trasparente
+        backgroundColor: '#ffffffcc',
         padding: '10px 20px',
         borderRadius: '8px',
         boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
         width: '100%',
         maxWidth: '1200px',
-        marginBottom: '20px'
+        marginBottom: '20px',
       }}
     >
       <div>
@@ -40,7 +39,7 @@ const Header = ({ isLoggedIn, handleLogout, showLogin, setShowLogin }) => {
               transition: 'background-color 0.3s ease',
               display: 'flex',
               alignItems: 'center',
-              gap: '8px'
+              gap: '8px',
             }}
           >
             <FaSignOutAlt /> Logout
@@ -49,7 +48,7 @@ const Header = ({ isLoggedIn, handleLogout, showLogin, setShowLogin }) => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => setShowLogin(true)}
+            onClick={() => setShowLogin(true)} // Questo aggiorna lo stato per mostrare il pop-up
             style={{
               backgroundColor: '#1e90ff',
               color: '#fff',
@@ -57,7 +56,7 @@ const Header = ({ isLoggedIn, handleLogout, showLogin, setShowLogin }) => {
               borderRadius: '6px',
               fontSize: '1rem',
               transition: 'background-color 0.3s ease',
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
           >
             Login
