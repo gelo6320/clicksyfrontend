@@ -1,4 +1,3 @@
-// frontend/components/AdminDashboard.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
@@ -22,54 +21,6 @@ const AdminDashboard = () => {
       setLeaderboard(res.data.leaderboard);
     } catch (error) {
       setStatusMessage('Errore nel recuperare la leaderboard.');
-    }
-  };
-
-  // Funzione per cambiare stile pulsante
-  const handleChangeButtonStyle = async () => {
-    try {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/change-button-style`, {
-        newStyle: buttonStyle
-      });
-      setStatusMessage(res.data.message);
-    } catch (error) {
-      setStatusMessage('Errore nel cambiare lo stile pulsante.');
-    }
-  };
-
-  // Genera link personalizzato
-  const handleGenerateRefLink = async () => {
-    try {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/generate-custom-ref-link`, {
-        customText: customRef
-      });
-      setStatusMessage(`Link generato: ${res.data.link}`);
-    } catch (error) {
-      setStatusMessage('Errore nella generazione del ref link.');
-    }
-  };
-
-  // Cambia sfondo
-  const handleChangeBackground = async () => {
-    try {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/change-background`, {
-        background
-      });
-      setStatusMessage(res.data.message);
-    } catch (error) {
-      setStatusMessage('Errore nel cambiare lo sfondo.');
-    }
-  };
-
-  // Aggiunge sezione extra
-  const handleAddSection = async () => {
-    try {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/add-section`, {
-        extraSection
-      });
-      setStatusMessage(res.data.message);
-    } catch (error) {
-      setStatusMessage('Errore nell\'aggiunta sezione extra.');
     }
   };
 
@@ -106,10 +57,8 @@ const AdminDashboard = () => {
         }}
       >
         <h2 style={{ color: '#2f3542', marginBottom: '15px' }}>Gestione</h2>
+        {/* Other sections here... */}
 
-        {/* Altre sezioni di gestione... */}
-
-        {/* Leaderboard */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

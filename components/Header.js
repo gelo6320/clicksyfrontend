@@ -18,11 +18,12 @@ const Header = ({ isLoggedIn, handleLogout, setShowLogin }) => {
         boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
         width: '100%',
         maxWidth: '1200px',
-        marginBottom: '20px',
+        margin: '40px auto', // Margine dall'alto e centratura
+        position: 'relative',
       }}
     >
       <div>
-        <h2 style={{ margin: 0, color: '#2f3542' }}>Clicksy</h2>
+        <h2 style={{ margin: 0, color: '#2f3542', textAlign: 'center' }}>Clicksy</h2>
       </div>
       <div>
         {isLoggedIn ? (
@@ -48,7 +49,7 @@ const Header = ({ isLoggedIn, handleLogout, setShowLogin }) => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => setShowLogin(true)} // Questo aggiorna lo stato per mostrare il pop-up
+            onClick={() => setShowLogin(true)}
             style={{
               backgroundColor: '#1e90ff',
               color: '#fff',

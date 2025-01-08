@@ -1,20 +1,30 @@
 /* Global Styles */
 body {
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(120deg, #ff9a9e, #fad0c4 41%, #fad0c4);
+  background: linear-gradient(120deg, #6a11cb, #2575fc, #6dd5fa, #6a11cb);
+  background-size: 400% 400%;
+  animation: gradientMove 15s ease infinite;
   color: #333;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   line-height: 1.6;
-  scroll-behavior: smooth;
   overflow-x: hidden;
 }
 
-/* Headers */
+/* Animazione dello sfondo */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Typography */
 h1, h2, h3, h4, h5, h6 {
-  color: #2c3e50;
-  margin-bottom: 10px;
+  color: #ffffff;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 15px;
 }
 
 /* Links */
@@ -30,7 +40,7 @@ a:hover {
 
 /* Buttons */
 button {
-  background: linear-gradient(90deg, #6a11cb, #2575fc);
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
   color: white;
   padding: 12px 24px;
   border: none;
@@ -38,14 +48,58 @@ button {
   font-size: 1rem;
   cursor: pointer;
   font-weight: bold;
-  transition: background 0.3s ease-in-out, transform 0.2s ease;
-}
-button:hover {
-  background: linear-gradient(90deg, #2575fc, #6a11cb);
-  transform: translateY(-2px);
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Cards */
+button:hover {
+  background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Evidenziamento del messaggio */
+.highlight-message {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #ffde59;
+  text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.7);
+  text-align: center;
+  margin: 30px 0;
+  animation: bounce 2s infinite ease-in-out;
+}
+
+/* Animazione "bounce" per il messaggio */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Modal Styling */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+/* Card Design */
 .card {
   background: #ffffff;
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
@@ -54,27 +108,13 @@ button:hover {
   margin: 20px 0;
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
+
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
 }
 
-/* Section Styles */
-.section {
-  padding: 60px 20px;
-  text-align: center;
-}
-
-.section.bg-light {
-  background: #f4f4f9;
-}
-
-.section.bg-dark {
-  background: linear-gradient(90deg, #4e54c8, #8f94fb);
-  color: white;
-}
-
-/* Navigation Bar */
+/* Navigation */
 .navbar {
   background: rgba(255, 255, 255, 0.9);
   padding: 15px 30px;
@@ -106,33 +146,17 @@ footer {
   font-size: 0.9rem;
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from {
-      opacity: 0;
-      transform: translateY(10px);
-  }
-  to {
-      opacity: 1;
-      transform: translateY(0);
-  }
-}
-
-.fade-in {
-  animation: fadeIn 1s ease-in-out;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
   body {
-      font-size: 0.9rem;
+    font-size: 0.9rem;
   }
 
   .navbar {
-      flex-direction: column;
+    flex-direction: column;
   }
 
   .card {
-      padding: 15px;
+    padding: 15px;
   }
 }

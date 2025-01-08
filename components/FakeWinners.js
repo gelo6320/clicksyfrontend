@@ -1,4 +1,3 @@
-// frontend/components/FakeWinners.js
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -20,11 +19,11 @@ const FakeWinners = () => {
       setWins((prev) => {
         const updatedWins = [newWin, ...prev];
         if (updatedWins.length > 10) {
-          updatedWins.pop(); // Mantieni solo le ultime 10 vincite
+          updatedWins.pop();
         }
         return updatedWins;
       });
-    }, 10000); // Ogni 10 secondi
+    }, 10000);
 
     return () => clearInterval(interval);
   }, []);
@@ -35,17 +34,21 @@ const FakeWinners = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
       style={{
-        marginTop: 30,
+        position: 'fixed', // Fissa in basso
+        bottom: '20px',   // Posizionamento dal basso
+        left: '50%',      // Centrato orizzontalmente
+        transform: 'translateX(-50%)', // Corregge il centramento
         backgroundColor: '#ffffffcc',
         padding: '20px',
         borderRadius: '12px',
         boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
         width: '100%',
         maxWidth: '800px',
-        boxSizing: 'border-box'
+        boxSizing: 'border-box',
+        zIndex: 1000, // Assicura che sia visibile sopra altri elementi
       }}
     >
-      <h3 style={{ color: '#2f3542', marginBottom: '10px' }}>Vincite Recenti</h3>
+      <h3 style={{ color: '#2f3542', marginBottom: '10px', textAlign: 'center' }}>Vincite Recenti</h3>
       <div style={{
         maxHeight: '200px',
         overflowY: 'auto',
@@ -68,7 +71,7 @@ const FakeWinners = () => {
                 boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
                 display: 'flex',
                 justifyContent: 'space-between',
-                alignItems: 'center'
+                alignItems: 'center',
               }}
             >
               <span><strong>{win.name}</strong> ha vinto <strong>{win.amount}€</strong></span>

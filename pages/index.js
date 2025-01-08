@@ -7,7 +7,7 @@ import FakeWinners from '../components/FakeWinners';
 
 const HomePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showLogin, setShowLogin] = useState(false); // Stato per gestire il pop-up "Login"
+  const [showLogin, setShowLogin] = useState(false);
 
   const handleLogin = (user) => {
     setIsLoggedIn(true);
@@ -36,14 +36,25 @@ const HomePage = () => {
       )}
 
       {/* Contenuto principale */}
-      <div style={{ padding: '20px', textAlign: 'center' }}>
+      <div
+        style={{
+          padding: '20px',
+          textAlign: 'center',
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+        }}
+      >
         {isLoggedIn ? (
           <>
             <ButtonSection />
             <ReferralSection />
           </>
         ) : (
-          <p>Effettua il login per accedere alle funzionalità!</p>
+          <p className="highlight-message">
+            Effettua il login per accedere alle funzionalità!
+          </p>
         )}
         <FakeWinners />
       </div>
