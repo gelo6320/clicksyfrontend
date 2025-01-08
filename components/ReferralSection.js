@@ -1,4 +1,3 @@
-// frontend/components/ReferralSection.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
@@ -6,23 +5,6 @@ import { FaCopy } from 'react-icons/fa';
 
 const ReferralSection = ({ userData }) => {
   const [refMessage, setRefMessage] = useState('');
-
-  const handleApplyReferral = async () => {
-    try {
-      const refCode = new URLSearchParams(window.location.search).get('ref');
-      if (refCode) {
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/referral`, {
-          userId: userData.id,
-          refCode
-        });
-        setRefMessage(res.data.message);
-      } else {
-        setRefMessage('Nessun ref link disponibile.');
-      }
-    } catch (error) {
-      setRefMessage(error.response?.data?.message || 'Errore nell\'applicare referral.');
-    }
-  };
 
   const personalRefLink = typeof window !== 'undefined'
     ? `${window.location.origin}?ref=${userData?.referralCode}`
@@ -36,71 +18,77 @@ const ReferralSection = ({ userData }) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
       style={{
-        backgroundColor: '#ffffffcc',
+        backgroundColor: '#f9f9f9',
         padding: '20px',
         borderRadius: '12px',
         marginTop: '20px',
-        width: '100%',
-        maxWidth: '800px',
-        boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+        maxWidth: '600px',
+        boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+        textAlign: 'center',
+        margin: '0 auto',
       }}
     >
-      <h3 style={{ color: '#2f3542', marginBottom: '10px' }}>Il tuo Ref Link Personale</h3>
-      <p style={{ color: '#57606f', marginBottom: '10px' }}>
-        Copialo e condividilo con i tuoi amici. Chi invita riceve uno sconto di 6 ore quando l'invitato clicca il pulsante. L'invitato avrà un timer ridotto a 10 ore solo per la prima volta.
+      <h3 style={{ color: '#2c3e50', marginBottom: '15px', fontWeight: '600' }}>
+        Il tuo Link di Riferimento
+      </h3>
+      <p style={{ color: '#7f8c8d', fontSize: '0.9rem', marginBottom: '20px' }}>
+        Condividi questo link con i tuoi amici per ottenere vantaggi esclusivi!
       </p>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        marginBottom: '15px',
+      }}>
         <input
           type="text"
           value={personalRefLink}
           readOnly
-          style={{ flex: 1, padding: '10px', borderRadius: '6px', border: '1px solid #ccc', fontSize: '1rem' }}
+          style={{
+            flex: 1,
+            padding: '10px',
+            borderRadius: '6px',
+            border: '1px solid #ccc',
+            fontSize: '1rem',
+            backgroundColor: '#ffffff',
+          }}
         />
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={copyToClipboard}
           style={{
-            backgroundColor: '#1e90ff',
+            backgroundColor: '#3498db',
             color: '#fff',
             padding: '10px',
             borderRadius: '6px',
             fontSize: '1rem',
+            cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
-            cursor: 'pointer'
+            gap: '5px',
           }}
         >
           <FaCopy />
+          Copia
         </motion.button>
       </div>
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={handleApplyReferral}
-        style={{
-          backgroundColor: '#2ed573',
-          color: '#fff',
-          padding: '10px 20px',
-          borderRadius: '6px',
-          fontSize: '1rem',
-          marginTop: '15px',
-          cursor: 'pointer',
-          width: '100%'
-        }}
-      >
-        Applica Referral
-      </motion.button>
-      <p style={{ color: '#ff4757', textAlign: 'center', marginTop: '10px' }}>{refMessage}</p>
+      {refMessage && (
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          style={{ color: '#e74c3c', fontSize: '0.85rem', marginTop: '10px' }}
+        >
+          {refMessage}
+        </motion.p>
+      )}
     </motion.div>
   );
-  // frontend/components/ReferralSection.js
-// ... (resto del codice rimane invariato)
-
 };
 
 export default ReferralSection;
