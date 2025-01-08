@@ -10,7 +10,7 @@ import { motion } from 'framer-motion';
 
 const HomePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showLogin, setShowLogin] = useState(true); // di default appare il pop-up per la registrazione
+  const [showLogin, setShowLogin] = useState(false); // Appare il pop-up quando clicchi "Login"
   const [userData, setUserData] = useState(null);
 
   // Funzione per simulare login/registrazione
@@ -23,7 +23,7 @@ const HomePage = () => {
   const handleLogout = () => {
     setIsLoggedIn(false);
     setUserData(null);
-    setShowLogin(true);
+    setShowLogin(false);
   };
 
   return (
@@ -40,7 +40,12 @@ const HomePage = () => {
         alignItems: 'center'
       }}
     >
-      <Header isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
+      <Header
+        isLoggedIn={isLoggedIn}
+        handleLogout={handleLogout}
+        showLogin={showLogin}
+        setShowLogin={setShowLogin}
+      />
 
       {/* Pop-up login/registrazione */}
       {showLogin && (
@@ -52,12 +57,10 @@ const HomePage = () => {
 
       {/* Sezione Pulsante */}
       {isLoggedIn && (
-        <ButtonSection userData={userData} />
-      )}
-
-      {/* Sezione Referral */}
-      {isLoggedIn && (
-        <ReferralSection userData={userData} />
+        <>
+          <ButtonSection userData={userData} />
+          <ReferralSection userData={userData} />
+        </>
       )}
 
       {/* Sezione vincite fittizie */}

@@ -1,5 +1,5 @@
 // frontend/components/AdminDashboard.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { FaPlus, FaCheckCircle } from 'react-icons/fa';
@@ -10,6 +10,20 @@ const AdminDashboard = () => {
   const [customRef, setCustomRef] = useState('');
   const [extraSection, setExtraSection] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
+  const [leaderboard, setLeaderboard] = useState([]);
+
+  useEffect(() => {
+    fetchLeaderboard();
+  }, []);
+
+  const fetchLeaderboard = async () => {
+    try {
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/leaderboard`);
+      setLeaderboard(res.data.leaderboard);
+    } catch (error) {
+      setStatusMessage('Errore nel recuperare la leaderboard.');
+    }
+  };
 
   // Funzione per cambiare stile pulsante
   const handleChangeButtonStyle = async () => {
@@ -93,147 +107,38 @@ const AdminDashboard = () => {
       >
         <h2 style={{ color: '#2f3542', marginBottom: '15px' }}>Gestione</h2>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          style={{ marginBottom: '20px' }}
-        >
-          <h3 style={{ color: '#57606f' }}>Cambia Stile Pulsante</h3>
-          <input
-            type="text"
-            placeholder="CSS, colore ecc..."
-            value={buttonStyle}
-            onChange={(e) => setButtonStyle(e.target.value)}
-            style={{ width: '100%', marginBottom: '10px', padding: '10px' }}
-          />
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleChangeButtonStyle}
-            style={{
-              backgroundColor: '#1e90ff',
-              color: '#fff',
-              padding: '10px 20px',
-              borderRadius: '6px',
-              fontSize: '1rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px'
-            }}
-          >
-            <FaCheckCircle /> Applica
-          </motion.button>
-        </motion.div>
+        {/* Altre sezioni di gestione... */}
 
+        {/* Leaderboard */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
           style={{ marginBottom: '20px' }}
         >
-          <h3 style={{ color: '#57606f' }}>Genera Ref Link Personalizzato</h3>
-          <input
-            type="text"
-            placeholder="Testo personalizzato"
-            value={customRef}
-            onChange={(e) => setCustomRef(e.target.value)}
-            style={{ width: '100%', marginBottom: '10px', padding: '10px' }}
-          />
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleGenerateRefLink}
-            style={{
-              backgroundColor: '#2ed573',
-              color: '#fff',
-              padding: '10px 20px',
-              borderRadius: '6px',
-              fontSize: '1rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px'
-            }}
-          >
-            <FaCheckCircle /> Genera
-          </motion.button>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          style={{ marginBottom: '20px' }}
-        >
-          <h3 style={{ color: '#57606f' }}>Cambia Sfondo Sito</h3>
-          <input
-            type="text"
-            placeholder="URL immagine o colore"
-            value={background}
-            onChange={(e) => setBackground(e.target.value)}
-            style={{ width: '100%', marginBottom: '10px', padding: '10px' }}
-          />
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleChangeBackground}
-            style={{
-              backgroundColor: '#3742fa',
-              color: '#fff',
-              padding: '10px 20px',
-              borderRadius: '6px',
-              fontSize: '1rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px'
-            }}
-          >
-            <FaCheckCircle /> Cambia
-          </motion.button>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-          style={{ marginBottom: '20px' }}
-        >
-          <h3 style={{ color: '#57606f' }}>Aggiungi Sezione Extra</h3>
-          <textarea
-            rows={4}
-            placeholder="Codice o testo per la sezione..."
-            value={extraSection}
-            onChange={(e) => setExtraSection(e.target.value)}
-            style={{ width: '100%', marginBottom: '10px', padding: '10px', resize: 'vertical' }}
-          />
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleAddSection}
-            style={{
-              backgroundColor: '#ffa502',
-              color: '#fff',
-              padding: '10px 20px',
-              borderRadius: '6px',
-              fontSize: '1rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px'
-            }}
-          >
-            <FaPlus /> Aggiungi
-          </motion.button>
+          <h3 style={{ color: '#57606f' }}>Leaderboard Referral</h3>
+          <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '10px' }}>
+            <thead>
+              <tr>
+                <th style={{ borderBottom: '1px solid #ccc', padding: '10px', textAlign: 'left' }}>Posizione</th>
+                <th style={{ borderBottom: '1px solid #ccc', padding: '10px', textAlign: 'left' }}>Email</th>
+                <th style={{ borderBottom: '1px solid #ccc', padding: '10px', textAlign: 'left' }}>Referral</th>
+              </tr>
+            </thead>
+            <tbody>
+              {leaderboard.map((user, index) => (
+                <tr key={user.id}>
+                  <td style={{ borderBottom: '1px solid #eee', padding: '10px' }}>{index + 1}</td>
+                  <td style={{ borderBottom: '1px solid #eee', padding: '10px' }}>{user.email}</td>
+                  <td style={{ borderBottom: '1px solid #eee', padding: '10px' }}>{user.referrals}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </motion.div>
       </motion.div>
 
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        style={{ color: '#ff4757', textAlign: 'center' }}
-      >
-        {statusMessage}
-      </motion.p>
+      <p style={{ color: '#ff4757', textAlign: 'center' }}>{statusMessage}</p>
     </motion.div>
   );
 };

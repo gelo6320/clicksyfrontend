@@ -3,7 +3,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { FaSignOutAlt } from 'react-icons/fa';
 
-const Header = ({ isLoggedIn, handleLogout }) => {
+const Header = ({ isLoggedIn, handleLogout, showLogin, setShowLogin }) => {
   return (
     <motion.div
       initial={{ y: -50, opacity: 0 }}
@@ -46,7 +46,22 @@ const Header = ({ isLoggedIn, handleLogout }) => {
             <FaSignOutAlt /> Logout
           </motion.button>
         ) : (
-          <p style={{ color: '#57606f' }}>Benvenuto su Clicksy</p>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setShowLogin(true)}
+            style={{
+              backgroundColor: '#1e90ff',
+              color: '#fff',
+              padding: '8px 16px',
+              borderRadius: '6px',
+              fontSize: '1rem',
+              transition: 'background-color 0.3s ease',
+              cursor: 'pointer'
+            }}
+          >
+            Login
+          </motion.button>
         )}
       </div>
     </motion.div>

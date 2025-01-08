@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const names = ['Mario', 'Lucia', 'Giuseppe', 'Giulia', 'Francesca', 'Davide', 'Sara', 'Roberto'];
-// Genera un nome e orario a caso
+
 const generateRandomWin = () => {
   const name = names[Math.floor(Math.random() * names.length)];
   const amount = 100;
@@ -17,23 +17,35 @@ const FakeWinners = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       const newWin = generateRandomWin();
-      setWins((prev) => [newWin, ...prev]);
-    }, 10000); // ogni 10 secondi
+      setWins((prev) => {
+        const updatedWins = [newWin, ...prev];
+        if (updatedWins.length > 10) {
+          updatedWins.pop(); // Mantieni solo le ultime 10 vincite
+        }
+        return updatedWins;
+      });
+    }, 10000); // Ogni 10 secondi
+
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div style={{
-      marginTop: 30,
-      backgroundColor: '#ffffffcc',
-      padding: '20px',
-      borderRadius: '12px',
-      boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-      width: '100%',
-      maxWidth: '800px',
-      overflow: 'hidden'
-    }}>
-      <h3 style={{ color: '#2f3542', marginBottom: '15px' }}>Vincite Recenti</h3>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      style={{
+        marginTop: 30,
+        backgroundColor: '#ffffffcc',
+        padding: '20px',
+        borderRadius: '12px',
+        boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+        width: '100%',
+        maxWidth: '800px',
+        boxSizing: 'border-box'
+      }}
+    >
+      <h3 style={{ color: '#2f3542', marginBottom: '10px' }}>Vincite Recenti</h3>
       <div style={{
         maxHeight: '200px',
         overflowY: 'auto',
@@ -65,7 +77,7 @@ const FakeWinners = () => {
           ))}
         </AnimatePresence>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
