@@ -1,3 +1,4 @@
+// frontend/components/ReferralSection.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
@@ -6,8 +7,10 @@ import { FaCopy } from 'react-icons/fa';
 const ReferralSection = ({ userData }) => {
   const [refMessage, setRefMessage] = useState('');
 
+  if (!userData) return null; // Non mostrare nulla se l'utente non è autenticato
+
   const personalRefLink = typeof window !== 'undefined'
-    ? `${window.location.origin}?ref=${userData?.referralCode}`
+    ? `${window.location.origin}?ref=${userData.referralCode}`
     : '';
 
   const copyToClipboard = () => {

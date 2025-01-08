@@ -1,3 +1,4 @@
+// frontend/components/ButtonSection.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
@@ -8,6 +9,8 @@ const ButtonSection = ({ userData }) => {
   const [timer, setTimer] = useState(0);
 
   useEffect(() => {
+    if (!userData) return; // Aggiunto controllo
+
     const storedNextClick = localStorage.getItem(`nextClickTime_${userData.id}`);
     if (storedNextClick) {
       const nextTime = new Date(storedNextClick).getTime();
@@ -17,7 +20,7 @@ const ButtonSection = ({ userData }) => {
         setButtonState('disabled');
       }
     }
-  }, [userData.id]);
+  }, [userData]);
 
   useEffect(() => {
     let interval = null;
@@ -37,6 +40,11 @@ const ButtonSection = ({ userData }) => {
   }, [timer]);
 
   const handleClick = async () => {
+    if (!userData) {
+      alert('Utente non autenticato.');
+      return;
+    }
+
     setButtonState('loading');
     try {
       const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/click`, {
@@ -88,6 +96,8 @@ const ButtonSection = ({ userData }) => {
     const s = seconds % 60;
     return `${h}h ${m}m ${s}s`;
   };
+
+  if (!userData) return null; // Non mostrare nulla se l'utente non è autenticato
 
   return (
     <div style={{ margin: '20px 0', textAlign: 'center', width: '100%', maxWidth: '800px' }}>

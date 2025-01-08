@@ -1,3 +1,5 @@
+/* frontend/styles/globals.css */
+
 /* Global Styles */
 body {
   font-family: 'Poppins', sans-serif;
@@ -59,20 +61,13 @@ button:hover {
 }
 
 /* Evidenziamento del messaggio */
-.highlight-message {
+.login-message {
   font-size: 2.5rem;
   font-weight: bold;
   color: #ffde59;
   text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.7);
   text-align: center;
   margin: 30px 0;
-  animation: bounce 2s infinite ease-in-out;
-}
-
-/* Animazione "bounce" per il messaggio */
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
 }
 
 /* Modal Styling */
@@ -146,6 +141,38 @@ footer {
   font-size: 0.9rem;
 }
 
+/* Fake Winners */
+.fake-winners {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ffffffcc;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 800px;
+  box-sizing: border-box;
+  z-index: 1000;
+}
+
+.wins-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.win-item {
+  background-color: #fff;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   body {
@@ -154,9 +181,56 @@ footer {
 
   .navbar {
     flex-direction: column;
+    padding: 10px 20px;
+  }
+
+  .navbar a {
+    margin: 5px 0;
   }
 
   .card {
     padding: 15px;
+  }
+
+  /* Pulsanti */
+  button {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+
+  /* Modal Content */
+  .modal-content {
+    padding: 20px;
+    width: 90%;
+  }
+
+  /* Sezioni */
+  .referral-section, .button-section {
+    padding: 15px;
+  }
+
+  /* Fake Winners */
+  .fake-winners {
+    padding: 15px;
+    width: 90%;
+    max-width: 700px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-message {
+    font-size: 2rem;
+    margin: 20px 0;
+  }
+
+  /* Pulsanti */
+  button {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+  }
+
+  /* Sezioni */
+  .referral-section, .button-section {
+    padding: 10px;
   }
 }
