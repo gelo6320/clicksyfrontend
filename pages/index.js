@@ -1,3 +1,4 @@
+// frontend/pages/index.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from '../components/Header';
@@ -5,15 +6,7 @@ import LoginModal from '../components/LoginModal';
 import ButtonSection from '../components/ButtonSection';
 import ReferralSection from '../components/ReferralSection';
 import FakeWinners from '../components/FakeWinners';
-
-/*
-  Pagina principale del sito clicksy:
-  - Mostra header
-  - Gestisce il login modal
-  - Mostra sezione del pulsante "ritira 100€"
-  - Mostra la sezione ref link personale
-  - Mostra le vincite fittizie (FakeWinners)
-*/
+import { motion } from 'framer-motion';
 
 const HomePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -34,13 +27,21 @@ const HomePage = () => {
   };
 
   return (
-    <div style={{
-      background: 'linear-gradient(to right, #e1eec3, #f05053)',
-      minHeight: '100vh',
-      padding: '20px'
-    }}>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      style={{
+        background: 'linear-gradient(to right, #ece9e6, #ffffff)',
+        minHeight: '100vh',
+        padding: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+      }}
+    >
       <Header isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
-      
+
       {/* Pop-up login/registrazione */}
       {showLogin && (
         <LoginModal
@@ -61,7 +62,7 @@ const HomePage = () => {
 
       {/* Sezione vincite fittizie */}
       <FakeWinners />
-    </div>
+    </motion.div>
   );
 };
 

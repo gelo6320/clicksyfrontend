@@ -1,5 +1,8 @@
+// frontend/components/LoginModal.js
 import React, { useState } from 'react';
 import axios from 'axios';
+import { motion } from 'framer-motion';
+import { FaTimes } from 'react-icons/fa';
 
 const LoginModal = ({ onClose, onLoginSuccess }) => {
   const [email, setEmail] = useState('');
@@ -8,8 +11,6 @@ const LoginModal = ({ onClose, onLoginSuccess }) => {
 
   const handleRegister = async () => {
     try {
-      // In un caso reale: se l'utente ha un ref link
-      // potresti estrarlo da parametri URL e passarlo come referredBy
       const ref = localStorage.getItem('refCode'); // ad esempio
 
       const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/register`, {
@@ -43,49 +44,111 @@ const LoginModal = ({ onClose, onLoginSuccess }) => {
   };
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0, left: 0, right: 0, bottom: 0,
-      backgroundColor: 'rgba(0,0,0,0.5)',
-      display: 'flex', justifyContent: 'center', alignItems: 'center'
-    }}>
-      <div style={{
-        backgroundColor: '#fff',
-        padding: 20,
-        borderRadius: 8,
-        width: '400px',
-        maxWidth: '90%'
-      }}>
-        <h2>Registrazione / Login</h2>
-        <label>Email:</label>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      style={{
+        position: 'fixed',
+        top: 0, left: 0, right: 0, bottom: 0,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        display: 'flex', justifyContent: 'center', alignItems: 'center',
+        zIndex: 1000
+      }}
+    >
+      <motion.div
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.3 }}
+        style={{
+          backgroundColor: '#fff',
+          padding: '30px',
+          borderRadius: '12px',
+          width: '400px',
+          maxWidth: '90%',
+          boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
+          position: 'relative'
+        }}
+      >
+        <FaTimes
+          onClick={onClose}
+          style={{
+            position: 'absolute',
+            top: '15px',
+            right: '15px',
+            cursor: 'pointer',
+            color: '#57606f'
+          }}
+        />
+        <h2 style={{ color: '#2f3542', marginBottom: '20px' }}>Registrazione / Login</h2>
+        <label style={{ color: '#2f3542' }}>Email:</label>
         <input 
           type="email" 
           value={email} 
           onChange={(e) => setEmail(e.target.value)}
-          style={{ width: '100%', marginBottom: 10 }}
+          style={{ width: '100%', marginBottom: '15px', padding: '10px', fontSize: '1rem' }}
         />
-        <label>Password:</label>
+        <label style={{ color: '#2f3542' }}>Password:</label>
         <input 
           type="password" 
           value={password} 
           onChange={(e) => setPassword(e.target.value)}
-          style={{ width: '100%', marginBottom: 10 }}
+          style={{ width: '100%', marginBottom: '20px', padding: '10px', fontSize: '1rem' }}
         />
 
-        <div style={{ display: 'flex', gap: '10px', marginBottom: 10 }}>
-          <button onClick={handleLogin}>Login</button>
-          <button onClick={handleRegister}>Registrati</button>
+        <div style={{ display: 'flex', gap: '10px', marginBottom: '15px' }}>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleLogin}
+            style={{
+              backgroundColor: '#1e90ff',
+              color: '#fff',
+              padding: '10px 20px',
+              borderRadius: '6px',
+              fontSize: '1rem',
+              flex: 1
+            }}
+          >
+            Login
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleRegister}
+            style={{
+              backgroundColor: '#2ed573',
+              color: '#fff',
+              padding: '10px 20px',
+              borderRadius: '6px',
+              fontSize: '1rem',
+              flex: 1
+            }}
+          >
+            Registrati
+          </motion.button>
         </div>
 
-        <button onClick={handleGoogleLogin} style={{ marginBottom: 10 }}>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={handleGoogleLogin}
+          style={{
+            backgroundColor: '#3742fa',
+            color: '#fff',
+            padding: '10px 20px',
+            borderRadius: '6px',
+            fontSize: '1rem',
+            width: '100%',
+            marginBottom: '15px'
+          }}
+        >
           Accedi con Google
-        </button>
+        </motion.button>
 
-        <button onClick={onClose}>Chiudi</button>
-
-        <p>{statusMessage}</p>
-      </div>
-    </div>
+        <p style={{ color: '#ff4757', textAlign: 'center' }}>{statusMessage}</p>
+      </motion.div>
+    </motion.div>
   );
 };
 
