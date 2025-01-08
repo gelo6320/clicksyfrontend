@@ -1,10 +1,12 @@
 // frontend/components/ReferralSection.js
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { FaCopy } from 'react-icons/fa';
+import { AuthContext } from '../context/AuthContext';
 
-const ReferralSection = ({ userData }) => {
+const ReferralSection = () => {
+  const { userData, token } = useContext(AuthContext);
   const [refMessage, setRefMessage] = useState('');
 
   if (!userData) return null; // Non mostrare nulla se l'utente non è autenticato

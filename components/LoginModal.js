@@ -1,13 +1,16 @@
 // frontend/components/LoginModal.js
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes } from 'react-icons/fa';
+import { AuthContext } from '../context/AuthContext';
 
-const LoginModal = ({ onClose, onLoginSuccess }) => {
+const LoginModal = ({ onClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
+
+  const { handleLogin } = useContext(AuthContext); // Use context
 
   const handleRegister = async () => {
     try {
@@ -19,20 +22,20 @@ const LoginModal = ({ onClose, onLoginSuccess }) => {
         referredBy: ref
       });
       setStatusMessage(res.data.message);
-      onLoginSuccess(res.data.user);
+      // Do not auto-login after registration
     } catch (error) {
       setStatusMessage(error.response?.data?.message || 'Errore di registrazione.');
     }
   };
 
-  const handleLogin = async () => {
+  const handleLoginClick = async () => {
     try {
       const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/login`, {
         email,
         password
       });
       setStatusMessage(res.data.message);
-      onLoginSuccess(res.data.user);
+      handleLogin(res.data.user, res.data.token); // Pass user and token
     } catch (error) {
       setStatusMessage(error.response?.data?.message || 'Errore di login.');
     }
@@ -103,7 +106,7 @@ const LoginModal = ({ onClose, onLoginSuccess }) => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={handleLogin}
+              onClick={handleLoginClick}
               style={{
                 backgroundColor: '#1e90ff',
                 color: '#fff',

@@ -1,41 +1,24 @@
 // frontend/pages/index.js
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import Header from '../components/Header';
 import LoginModal from '../components/LoginModal';
 import ButtonSection from '../components/ButtonSection';
 import ReferralSection from '../components/ReferralSection';
 import FakeWinners from '../components/FakeWinners';
+import { AuthContext } from '../context/AuthContext';
 
 const HomePage = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showLogin, setShowLogin] = useState(false);
-  const [userData, setUserData] = useState(null); // Stato per memorizzare i dati dell'utente
-
-  const handleLogin = (user) => {
-    setIsLoggedIn(true);
-    setShowLogin(false);
-    setUserData(user); // Memorizza i dati dell'utente
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUserData(null); // Resetta i dati dell'utente
-  };
+  const { isLoggedIn, showLogin, setShowLogin, userData } = useContext(AuthContext);
 
   return (
     <div>
       {/* Header */}
-      <Header
-        isLoggedIn={isLoggedIn}
-        handleLogout={handleLogout}
-        setShowLogin={setShowLogin}
-      />
+      <Header />
 
       {/* Pop-up Login */}
       {showLogin && (
         <LoginModal
           onClose={() => setShowLogin(false)}
-          onLoginSuccess={handleLogin}
         />
       )}
 
@@ -44,21 +27,20 @@ const HomePage = () => {
         style={{
           padding: '20px',
           textAlign: 'center',
-          minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
-        {isLoggedIn ? (
-          <>
-            <ButtonSection userData={userData} />
-            <ReferralSection userData={userData} />
-          </>
-        ) : (
+        {!isLoggedIn ? (
           <p className="login-message">
             Effettua il login per accedere a Clicksy
           </p>
+        ) : (
+          <>
+            <ButtonSection />
+            <ReferralSection />
+          </>
         )}
         <FakeWinners />
       </div>

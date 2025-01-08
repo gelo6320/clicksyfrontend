@@ -1,29 +1,27 @@
 // frontend/components/FakeWinners.js
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-const names = ['Mario', 'Lucia', 'Giuseppe', 'Giulia', 'Francesca', 'Davide', 'Sara', 'Roberto'];
-
-const generateRandomWin = () => {
-  const name = names[Math.floor(Math.random() * names.length)];
-  const amount = 100;
-  const time = new Date().toLocaleTimeString();
-  return { name, amount, time };
-};
+import axios from 'axios';
 
 const FakeWinners = () => {
   const [wins, setWins] = useState([]);
 
   useEffect(() => {
+    // Fetch fake wins from backend
+    const fetchFakeWins = async () => {
+      try {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/wins`);
+        setWins(res.data.wins);
+      } catch (error) {
+        console.error('Errore nel fetch delle vincite:', error);
+      }
+    };
+
+    fetchFakeWins();
+
+    // Poll the wins every 10 seconds
     const interval = setInterval(() => {
-      const newWin = generateRandomWin();
-      setWins((prev) => {
-        const updatedWins = [newWin, ...prev];
-        if (updatedWins.length > 10) {
-          updatedWins.pop();
-        }
-        return updatedWins;
-      });
+      fetchFakeWins();
     }, 10000);
 
     return () => clearInterval(interval);
@@ -37,7 +35,7 @@ const FakeWinners = () => {
       className="fake-winners"
     >
       <h3 style={{ color: '#2f3542', marginBottom: '10px', textAlign: 'center' }}>Vincite Recenti</h3>
-      <div className="wins-container">
+      <div className="wins-carousel">
         <AnimatePresence>
           {wins.map((win, index) => (
             <motion.div

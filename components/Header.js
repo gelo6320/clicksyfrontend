@@ -1,8 +1,12 @@
-import React from 'react';
+// frontend/components/Header.js
+import React, { useContext } from 'react';
 import { motion } from 'framer-motion';
 import { FaSignOutAlt } from 'react-icons/fa';
+import { AuthContext } from '../context/AuthContext';
 
-const Header = ({ isLoggedIn, handleLogout, setShowLogin }) => {
+const Header = () => {
+  const { isLoggedIn, handleLogout, setShowLogin } = useContext(AuthContext);
+
   return (
     <motion.div
       initial={{ y: -50, opacity: 0 }}

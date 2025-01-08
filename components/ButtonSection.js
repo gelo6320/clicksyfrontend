@@ -1,10 +1,12 @@
 // frontend/components/ButtonSection.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { FaSpinner } from 'react-icons/fa';
+import { AuthContext } from '../context/AuthContext';
 
-const ButtonSection = ({ userData }) => {
+const ButtonSection = () => {
+  const { userData, token } = useContext(AuthContext);
   const [buttonState, setButtonState] = useState('default'); 
   const [timer, setTimer] = useState(0);
 
@@ -47,8 +49,10 @@ const ButtonSection = ({ userData }) => {
 
     setButtonState('loading');
     try {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/click`, {
-        userId: userData.id
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/click`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
       setButtonState('red');
       await new Promise((r) => setTimeout(r, 1500)); 
