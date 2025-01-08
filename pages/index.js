@@ -1,71 +1,42 @@
-// frontend/pages/index.js
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import Header from '../components/Header';
-import LoginModal from '../components/LoginModal';
 import ButtonSection from '../components/ButtonSection';
 import ReferralSection from '../components/ReferralSection';
 import FakeWinners from '../components/FakeWinners';
-import { motion } from 'framer-motion';
 
 const HomePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showLogin, setShowLogin] = useState(false); // Appare il pop-up quando clicchi "Login"
-  const [userData, setUserData] = useState(null);
-
-  // Funzione per simulare login/registrazione
-  const handleLogin = (user) => {
-    setIsLoggedIn(true);
-    setUserData(user);
-    setShowLogin(false);
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUserData(null);
-    setShowLogin(false);
-  };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-      style={{
-        background: 'linear-gradient(to right, #ece9e6, #ffffff)',
-        minHeight: '100vh',
-        padding: '20px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
-      }}
-    >
+    <div>
+      {/* Header */}
       <Header
         isLoggedIn={isLoggedIn}
-        handleLogout={handleLogout}
-        showLogin={showLogin}
-        setShowLogin={setShowLogin}
+        setIsLoggedIn={setIsLoggedIn}
       />
 
-      {/* Pop-up login/registrazione */}
-      {showLogin && (
-        <LoginModal
-          onClose={() => setShowLogin(false)}
-          onLoginSuccess={handleLogin}
-        />
-      )}
+      {/* Hero Section */}
+      <section className="section bg-dark">
+        <h1>Benvenuti in Clicksy</h1>
+        <p>Un modo semplice per guadagnare e invitare amici.</p>
+      </section>
 
       {/* Sezione Pulsante */}
-      {isLoggedIn && (
-        <>
-          <ButtonSection userData={userData} />
-          <ReferralSection userData={userData} />
-        </>
-      )}
+      {isLoggedIn && <ButtonSection />}
 
-      {/* Sezione vincite fittizie */}
-      <FakeWinners />
-    </motion.div>
+      {/* Sezione Referral */}
+      {isLoggedIn && <ReferralSection />}
+
+      {/* Fake Winners */}
+      <section className="section bg-light">
+        <FakeWinners />
+      </section>
+
+      {/* Footer */}
+      <footer>
+        <p>&copy; 2025 Clicksy. Tutti i diritti riservati.</p>
+      </footer>
+    </div>
   );
 };
 

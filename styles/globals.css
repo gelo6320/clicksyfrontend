@@ -1,83 +1,100 @@
 /* Global Styles */
 body {
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+  background: linear-gradient(120deg, #ff9a9e, #fad0c4 41%, #fad0c4);
   color: #333;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   line-height: 1.6;
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 /* Headers */
 h1, h2, h3, h4, h5, h6 {
-  color: #ffffff;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  color: #2c3e50;
   margin-bottom: 10px;
 }
 
 /* Links */
 a {
-  color: #ff6f61;
+  color: #3498db;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: bold;
   transition: color 0.3s ease-in-out;
 }
 a:hover {
-  color: #ff2a1f;
+  color: #2980b9;
 }
 
 /* Buttons */
 button {
-  background: #4CAF50;
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
   color: white;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  border-radius: 8px;
   font-size: 1rem;
-  transition: background 0.3s ease-in-out;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease-in-out, transform 0.2s ease;
 }
 button:hover {
-  background: #45a049;
+  background: linear-gradient(90deg, #2575fc, #6a11cb);
+  transform: translateY(-2px);
 }
 
 /* Cards */
 .card {
   background: #ffffff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
   padding: 20px;
-  margin: 15px 0;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  margin: 20px 0;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Section Styles */
+.section {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.section.bg-light {
+  background: #f4f4f9;
+}
+
+.section.bg-dark {
+  background: linear-gradient(90deg, #4e54c8, #8f94fb);
+  color: white;
 }
 
 /* Navigation Bar */
 .navbar {
-  background: rgba(0, 0, 0, 0.8);
-  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 15px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .navbar a {
-  color: white;
-  margin: 0 10px;
-  font-weight: bold;
+  color: #2c3e50;
+  margin: 0 15px;
+  font-weight: 600;
 }
 
 .navbar a:hover {
-  color: #ff6f61;
+  color: #3498db;
 }
 
 /* Footer */
