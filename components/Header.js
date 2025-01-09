@@ -5,7 +5,7 @@ import { FaSignOutAlt } from 'react-icons/fa';
 import { AuthContext } from '../context/AuthContext';
 
 const Header = () => {
-  const { isLoggedIn, handleLogout, setShowLogin } = useContext(AuthContext);
+  const { isLoggedIn, handleLogout, setShowLogin, userData } = useContext(AuthContext);
 
   return (
     <motion.div
@@ -13,17 +13,18 @@ const Header = () => {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
       style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        backgroundColor: '#ffffffcc',
+        padding: '10px 20px',
+        borderBottom: '1px solid #ddd',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: '#ffffffcc',
-        padding: '10px 20px',
-        borderRadius: '8px',
-        boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-        width: '100%',
-        maxWidth: '1200px',
-        margin: '40px auto', // Margine dall'alto e centratura
-        position: 'relative',
+        zIndex: 1000,
+        boxSizing: 'border-box',
       }}
     >
       <div>

@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
         setToken(storedToken);
       })
       .catch(err => {
-        console.error(err);
+        console.error('Errore nella verifica del token:', err);
         setIsLoggedIn(false);
         setUserData(null);
         setToken(null);

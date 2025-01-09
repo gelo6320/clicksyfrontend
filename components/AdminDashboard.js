@@ -1,95 +1,143 @@
-import React, { useState, useEffect } from 'react';
+// frontend/components/AdminDashboard.js
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
 import { motion } from 'framer-motion';
-import { FaPlus, FaCheckCircle } from 'react-icons/fa';
 
 const AdminDashboard = () => {
-  const [buttonStyle, setButtonStyle] = useState('');
-  const [background, setBackground] = useState('');
-  const [customRef, setCustomRef] = useState('');
-  const [extraSection, setExtraSection] = useState('');
-  const [statusMessage, setStatusMessage] = useState('');
+  const { token } = useContext(AuthContext);
   const [leaderboard, setLeaderboard] = useState([]);
 
   useEffect(() => {
-    fetchLeaderboard();
-  }, []);
+    const fetchLeaderboard = async () => {
+      try {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/leaderboard`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setLeaderboard(res.data.leaderboard);
+      } catch (error) {
+        console.error('Errore nel fetch della classifica:', error);
+      }
+    };
 
-  const fetchLeaderboard = async () => {
-    try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/leaderboard`);
-      setLeaderboard(res.data.leaderboard);
-    } catch (error) {
-      setStatusMessage('Errore nel recuperare la leaderboard.');
-    }
-  };
+    fetchLeaderboard();
+  }, [token]);
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
+      transition={{ duration: 0.5 }}
       style={{
-        background: 'linear-gradient(to right, #ece9e6, #ffffff)',
-        minHeight: '100vh',
-        padding: '20px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
+        width: '100vw',
+        height: '100vh',
+        backgroundColor: '#f0f2f5',
+        padding: '40px',
+        boxSizing: 'border-box',
+        overflowY: 'auto',
       }}
     >
-      <h1 style={{ color: '#2f3542', marginBottom: '20px' }}>Admin Dashboard</h1>
+      <h1 style={{ textAlign: 'center', marginBottom: '40px' }}>Dashboard Amministratore</h1>
       
-      <motion.div
-        initial={{ scale: 0.95, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        style={{
-          backgroundColor: '#ffffffcc',
-          padding: '20px',
-          borderRadius: '12px',
-          boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-          width: '100%',
-          maxWidth: '800px',
-          marginBottom: '20px',
-          overflowY: 'auto',
-          maxHeight: '70vh'
-        }}
-      >
-        <h2 style={{ color: '#2f3542', marginBottom: '15px' }}>Gestione</h2>
-        {/* Other sections here... */}
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
-          style={{ marginBottom: '20px' }}
-        >
-          <h3 style={{ color: '#57606f' }}>Leaderboard Referral</h3>
-          <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '10px' }}>
-            <thead>
-              <tr>
-                <th style={{ borderBottom: '1px solid #ccc', padding: '10px', textAlign: 'left' }}>Posizione</th>
-                <th style={{ borderBottom: '1px solid #ccc', padding: '10px', textAlign: 'left' }}>Email</th>
-                <th style={{ borderBottom: '1px solid #ccc', padding: '10px', textAlign: 'left' }}>Referral</th>
+      {/* Leaderboard Section */}
+      <div style={{
+        backgroundColor: '#fff',
+        padding: '20px',
+        borderRadius: '12px',
+        boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+        marginBottom: '40px',
+      }}>
+        <h2>Classifica dei Referrer</h2>
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr>
+              <th style={tableHeaderStyle}>Posizione</th>
+              <th style={tableHeaderStyle}>Email</th>
+              <th style={tableHeaderStyle}>Referrals</th>
+            </tr>
+          </thead>
+          <tbody>
+            {leaderboard.map((user, index) => (
+              <tr key={user.id}>
+                <td style={tableCellStyle}>{index + 1}</td>
+                <td style={tableCellStyle}>{user.email}</td>
+                <td style={tableCellStyle}>{user.referrals}</td>
               </tr>
-            </thead>
-            <tbody>
-              {leaderboard.map((user, index) => (
-                <tr key={user.id}>
-                  <td style={{ borderBottom: '1px solid #eee', padding: '10px' }}>{index + 1}</td>
-                  <td style={{ borderBottom: '1px solid #eee', padding: '10px' }}>{user.email}</td>
-                  <td style={{ borderBottom: '1px solid #eee', padding: '10px' }}>{user.referrals}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </motion.div>
-      </motion.div>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-      <p style={{ color: '#ff4757', textAlign: 'center' }}>{statusMessage}</p>
+      {/* Altre Funzioni Admin */}
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '30px',
+        alignItems: 'center',
+      }}>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          style={adminButtonStyle}
+          onClick={() => alert('Funzione di Cambio Stile del Pulsante (mock)')}
+        >
+          Cambia Stile Pulsante
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          style={adminButtonStyle}
+          onClick={() => alert('Funzione di Generazione Link Referral Personalizzato (mock)')}
+        >
+          Genera Link Referral
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          style={adminButtonStyle}
+          onClick={() => alert('Funzione di Cambio Sfondo del Sito (mock)')}
+        >
+          Cambia Sfondo Sito
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          style={adminButtonStyle}
+          onClick={() => alert('Funzione di Aggiunta Sezione Extra (mock)')}
+        >
+          Aggiungi Sezione Extra
+        </motion.button>
+      </div>
     </motion.div>
   );
+};
+
+const tableHeaderStyle = {
+  borderBottom: '2px solid #ddd',
+  padding: '10px',
+  textAlign: 'left',
+  fontSize: '1.1rem',
+};
+
+const tableCellStyle = {
+  borderBottom: '1px solid #ddd',
+  padding: '10px',
+  fontSize: '1rem',
+};
+
+const adminButtonStyle = {
+  backgroundColor: '#2f3542',
+  color: '#fff',
+  padding: '20px 40px',
+  borderRadius: '12px',
+  fontSize: '1.5rem',
+  cursor: 'pointer',
+  width: '100%',
+  maxWidth: '400px',
+  textAlign: 'center',
+  boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
 };
 
 export default AdminDashboard;

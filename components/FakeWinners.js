@@ -11,7 +11,7 @@ const FakeWinners = () => {
     const fetchFakeWins = async () => {
       try {
         const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/wins`);
-        setWins(res.data.wins);
+        setWins(res.data.wins.slice(0, 4)); // Prendi solo le prime 4
       } catch (error) {
         console.error('Errore nel fetch delle vincite:', error);
       }
@@ -35,14 +35,14 @@ const FakeWinners = () => {
       className="fake-winners"
     >
       <h3 style={{ color: '#2f3542', marginBottom: '10px', textAlign: 'center' }}>Vincite Recenti</h3>
-      <div className="wins-carousel">
+      <div className="wins-container">
         <AnimatePresence>
           {wins.map((win, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              exit={{ opacity: 0, y: 20 }}
               transition={{ duration: 0.5 }}
               className="win-item"
             >

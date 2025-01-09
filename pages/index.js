@@ -26,6 +26,7 @@ const HomePage = () => {
       <div
         style={{
           padding: '20px',
+          paddingTop: '80px', // Aggiungi padding per l'header fisso
           textAlign: 'center',
           display: 'flex',
           flexDirection: 'column',
