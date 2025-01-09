@@ -17,7 +17,7 @@ const Header = () => {
         top: 0,
         left: 0,
         width: '100%',
-        backgroundColor: '#ffffffcc',
+        backgroundColor: '#ffffff', // Rimosso il canale alfa per rendere non trasparente
         padding: '10px 20px',
         borderBottom: '1px solid #ddd',
         display: 'flex',

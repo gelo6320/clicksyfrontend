@@ -48,6 +48,9 @@ const AdminDashboard = () => {
         borderRadius: '12px',
         boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
         marginBottom: '40px',
+        width: '100%',
+        maxWidth: '800px',
+        margin: '0 auto 40px auto',
       }}>
         <h2>Classifica dei Referrer</h2>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -76,6 +79,9 @@ const AdminDashboard = () => {
         flexDirection: 'column',
         gap: '30px',
         alignItems: 'center',
+        width: '100%',
+        maxWidth: '800px',
+        margin: '0 auto',
       }}>
         <motion.button
           whileHover={{ scale: 1.05 }}

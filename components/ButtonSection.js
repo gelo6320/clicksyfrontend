@@ -9,17 +9,19 @@ const ButtonSection = () => {
   const { userData, token } = useContext(AuthContext);
   const [buttonState, setButtonState] = useState('default'); 
   const [timer, setTimer] = useState(0);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   useEffect(() => {
-    if (!userData) return; // Aggiunto controllo
+    if (!userData) return;
 
     const storedNextClick = localStorage.getItem(`nextClickTime_${userData.id}`);
     if (storedNextClick) {
       const nextTime = new Date(storedNextClick).getTime();
       const now = new Date().getTime();
       if (nextTime > now) {
-        setTimer(Math.floor((nextTime - now) / 1000)); 
+        setTimer(Math.floor((nextTime - now) / 1000));
         setButtonState('disabled');
+        setIsDisabled(true);
       }
     }
   }, [userData]);
@@ -32,6 +34,7 @@ const ButtonSection = () => {
           if (prev <= 1) {
             clearInterval(interval);
             setButtonState('default');
+            setIsDisabled(false);
             return 0;
           }
           return prev - 1;
@@ -48,6 +51,7 @@ const ButtonSection = () => {
     }
 
     setButtonState('loading');
+    setIsDisabled(true);
     try {
       const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/click`, {}, {
         headers: {
@@ -65,6 +69,7 @@ const ButtonSection = () => {
     } catch (error) {
       alert(error.response?.data?.message || 'Errore nel click');
       setButtonState('default');
+      setIsDisabled(false);
     }
   };
 
@@ -72,22 +77,25 @@ const ButtonSection = () => {
     switch (buttonState) {
       case 'default':
         return {
-          backgroundColor: '#ff4757',
-          cursor: 'pointer'
+          backgroundColor: '#27ae60', // Verde più invitante
+          cursor: 'pointer',
+          transition: 'background-color 0.3s ease',
         };
       case 'loading':
         return {
-          backgroundColor: '#ffa502',
-          cursor: 'wait'
+          backgroundColor: '#f1c40f', // Giallo per il caricamento
+          cursor: 'wait',
+          transition: 'background-color 0.3s ease',
         };
       case 'red':
         return {
-          backgroundColor: 'red'
+          backgroundColor: 'red',
+          transition: 'background-color 0.3s ease',
         };
       case 'disabled':
         return {
           backgroundColor: 'gray',
-          cursor: 'not-allowed'
+          cursor: 'not-allowed',
         };
       default:
         return {};
@@ -101,13 +109,22 @@ const ButtonSection = () => {
     return `${h}h ${m}m ${s}s`;
   };
 
-  if (!userData) return null; // Non mostrare nulla se l'utente non è autenticato
+  if (!userData) return null;
 
   return (
     <div style={{ margin: '20px 0', textAlign: 'center', width: '100%', maxWidth: '800px' }}>
       <motion.button
-        style={getButtonStyle()}
+        style={{ 
+          ...getButtonStyle(), 
+          width: '300px', 
+          height: '100px', 
+          fontSize: '2rem', 
+          borderRadius: '12px',
+          color: '#fff',
+          fontWeight: 'bold',
+        }}
         onClick={handleClick}
+        disabled={isDisabled}
       >
         {buttonState === 'loading' ? (
           <FaSpinner className="spinner" style={{ animation: 'spin 2s linear infinite' }} />
@@ -119,7 +136,7 @@ const ButtonSection = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          style={{ marginTop: '15px', fontSize: '1rem', color: '#2f3542' }}
+          style={{ marginTop: '15px', fontSize: '1.2rem', color: '#2f3542' }}
         >
           Tempo residuo: <strong>{formatTime(timer)}</strong>
         </motion.div>
@@ -131,7 +148,23 @@ const ButtonSection = () => {
           100% { transform: rotate(360deg); }
         }
         .spinner {
-          font-size: 1.5rem;
+          font-size: 2.5rem;
+        }
+
+        @media (max-width: 768px) {
+          button {
+            width: 200px;
+            height: 70px;
+            font-size: 1.5rem;
+          }
+        }
+
+        @media (max-width: 480px) {
+          button {
+            width: 150px;
+            height: 60px;
+            font-size: 1.2rem;
+          }
         }
       `}</style>
     </div>

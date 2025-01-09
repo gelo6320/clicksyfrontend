@@ -111,7 +111,7 @@ button:hover {
 
 /* Navigation */
 .navbar {
-  background: rgba(255, 255, 255, 0.9);
+  background: #ffffff; /* Header non trasparente */
   padding: 15px 30px;
   display: flex;
   justify-content: space-between;
