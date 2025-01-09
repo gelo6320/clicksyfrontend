@@ -10,6 +10,7 @@ const ButtonSection = () => {
   const [buttonState, setButtonState] = useState('default'); 
   const [timer, setTimer] = useState(0);
   const [isDisabled, setIsDisabled] = useState(false);
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     if (!userData) return;
@@ -35,6 +36,7 @@ const ButtonSection = () => {
             clearInterval(interval);
             setButtonState('default');
             setIsDisabled(false);
+            setMessage('');
             return 0;
           }
           return prev - 1;
@@ -52,14 +54,18 @@ const ButtonSection = () => {
 
     setButtonState('loading');
     setIsDisabled(true);
+    setMessage('');
     try {
+      console.log('Invio richiesta di click al backend.');
       const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/click`, {}, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
+      console.log('Risposta dal backend:', res.data);
       setButtonState('red');
-      await new Promise((r) => setTimeout(r, 1500)); 
+      setMessage('Peccato, non hai vinto!');
+      await new Promise((r) => setTimeout(r, 2000)); 
       setButtonState('disabled');
       const newNextClick = new Date(res.data.nextClickTime).getTime();
       const now = new Date().getTime();
@@ -67,6 +73,7 @@ const ButtonSection = () => {
       setTimer(newTimer);
       localStorage.setItem(`nextClickTime_${userData.id}`, res.data.nextClickTime);
     } catch (error) {
+      console.error('Errore nel click:', error);
       alert(error.response?.data?.message || 'Errore nel click');
       setButtonState('default');
       setIsDisabled(false);
@@ -77,24 +84,24 @@ const ButtonSection = () => {
     switch (buttonState) {
       case 'default':
         return {
-          backgroundColor: '#27ae60', // Verde più invitante
+          background: 'linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)',
           cursor: 'pointer',
-          transition: 'background-color 0.3s ease',
+          transition: 'background 0.3s ease',
         };
       case 'loading':
         return {
-          backgroundColor: '#f1c40f', // Giallo per il caricamento
+          background: 'linear-gradient(135deg, #f1c40f 0%, #f39c12 100%)',
           cursor: 'wait',
-          transition: 'background-color 0.3s ease',
+          transition: 'background 0.3s ease',
         };
       case 'red':
         return {
-          backgroundColor: 'red',
-          transition: 'background-color 0.3s ease',
+          background: '#e74c3c',
+          transition: 'background 0.3s ease',
         };
       case 'disabled':
         return {
-          backgroundColor: 'gray',
+          background: '#95a5a6',
           cursor: 'not-allowed',
         };
       default:
@@ -112,7 +119,7 @@ const ButtonSection = () => {
   if (!userData) return null;
 
   return (
-    <div style={{ margin: '20px 0', textAlign: 'center', width: '100%', maxWidth: '800px' }}>
+    <div className="button-section">
       <motion.button
         style={{ 
           ...getButtonStyle(), 
@@ -122,13 +129,20 @@ const ButtonSection = () => {
           borderRadius: '12px',
           color: '#fff',
           fontWeight: 'bold',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'relative',
+          margin: '0 auto', // Centra il pulsante
         }}
         onClick={handleClick}
         disabled={isDisabled}
       >
         {buttonState === 'loading' ? (
           <FaSpinner className="spinner" style={{ animation: 'spin 2s linear infinite' }} />
-        ) : 'Ritira 100 €'}
+        ) : (
+          message ? message : 'Ritira 100 €'
+        )}
       </motion.button>
 
       {timer > 0 && (
@@ -136,12 +150,13 @@ const ButtonSection = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          style={{ marginTop: '15px', fontSize: '1.2rem', color: '#2f3542' }}
+          className="timer"
         >
           Tempo residuo: <strong>{formatTime(timer)}</strong>
         </motion.div>
       )}
 
+      {/* Styles */}
       <style jsx>{`
         @keyframes spin {
           0% { transform: rotate(0deg); }
@@ -149,6 +164,22 @@ const ButtonSection = () => {
         }
         .spinner {
           font-size: 2.5rem;
+        }
+
+        .button-section {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 40px 20px;
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        .timer {
+          margin-top: 15px;
+          font-size: 1.2rem;
+          color: #2f3542;
         }
 
         @media (max-width: 768px) {
