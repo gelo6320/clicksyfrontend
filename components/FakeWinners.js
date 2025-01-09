@@ -7,24 +7,24 @@ const FakeWinners = () => {
   const [wins, setWins] = useState([]);
 
   useEffect(() => {
-    // Fetch fake wins from backend
     const fetchFakeWins = async () => {
       try {
+        console.log('Backend URL:', process.env.NEXT_PUBLIC_BACKEND_URL); // Log per debugging
         const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/wins`);
+        console.log('Response:', res.data); // Log della risposta
         setWins(res.data.wins.slice(0, 4)); // Prendi solo le prime 4
       } catch (error) {
-        console.error('Errore nel fetch delle vincite:', error);
+        if (error.response) {
+          console.error('Errore nel fetch delle vincite:', error.response.data);
+        } else if (error.request) {
+          console.error('Nessuna risposta ricevuta:', error.request);
+        } else {
+          console.error('Errore nella configurazione della richiesta:', error.message);
+        }
       }
     };
 
     fetchFakeWins();
-
-    // Poll the wins every 10 seconds
-    const interval = setInterval(() => {
-      fetchFakeWins();
-    }, 10000);
-
-    return () => clearInterval(interval);
   }, []);
 
   return (
